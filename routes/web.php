@@ -23,7 +23,12 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::middleware(['client'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home.index');
+
+    //DESPESAS
     Route::get('/despesas', [DespesaController::class, 'index'])->name('despesas.index');
     Route::post('/despesas/cadastrar', [DespesaController::class, 'cadastrar'])->name('despesas.cadastrar');
+    Route::post('/despesas/deletar', [DespesaController::class, 'deletar'])->name('despesas.deletar');
+
+    //POUPANCA
     Route::get('/poupanca', [PoupancaController::class, 'index'])->name('poupanca.index');
 });

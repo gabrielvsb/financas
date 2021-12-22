@@ -10,8 +10,13 @@ class DespesaController extends Controller
 {
     public function index()
     {
-        $despesas = Despesas::where('user_id', '=', auth()->user()->id)->get();
+        $despesas = $this->listarDespesas();
         return view('despesas.index')->with(compact('despesas'));
+    }
+
+    public function listarDespesas()
+    {
+        return Despesas::where('user_id', '=', auth()->user()->id)->get();
     }
 
     public function cadastrar(Request $request)
@@ -26,6 +31,7 @@ class DespesaController extends Controller
             ]);
 
             $retorno['success'] = true;
+            $retorno['dados'] = $this->listarDespesas();
             $retorno['msg'] = 'Despesa cadastrada com sucesso!';
 
             return json_encode($retorno);
@@ -34,4 +40,23 @@ class DespesaController extends Controller
         }
 
     }
+
+    public function deletar(Request $request)
+    {
+        try {
+            Despesas::where('id', '=', $request->id)->delete();
+
+            $retorno['success'] = true;
+            $retorno['dados'] = $this->listarDespesas();
+            $retorno['msg'] = 'Despesa deletada com sucesso!';
+
+            return $retorno;
+
+        }catch (Exception $e){
+            return $e;
+        }
+
+        return $request->all();
+    }
+
 }

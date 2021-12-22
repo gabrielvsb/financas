@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalCadastroDespesas" tabindex="-1" role="dialog">
+<div style="display: none" class="modal fade" id="modalCadastroDespesas" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
