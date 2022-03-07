@@ -11,12 +11,19 @@ class DespesaController extends Controller
     public function index()
     {
         $despesas = $this->listarDespesas();
-        return view('despesas.index')->with(compact('despesas'));
+        $soma = $this->totalDespesas();
+        return view('despesas.index')->with(compact('despesas', 'soma'));
     }
 
     public function listarDespesas()
     {
         return Despesas::where('user_id', '=', auth()->user()->id)->get();
+    }
+
+    public function totalDespesas()
+    {
+        $valor = Despesas::where('user_id', '=', auth()->user()->id)->sum('valor');
+        return number_format($valor, 2, ',', '.' );
     }
 
     public function cadastrar(Request $request)
