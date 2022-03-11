@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Despesas;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
+use function PHPUnit\Framework\isNan;
 
 class DespesaController extends Controller
 {
@@ -12,12 +14,42 @@ class DespesaController extends Controller
     {
         $despesas = $this->listarDespesas();
         $soma = $this->totalDespesas();
-        return view('despesas.index')->with(compact('despesas', 'soma'));
+        $despesas_agrupadas = $this->listarEAgruparDespesas();
+        $mes_atual = ucfirst(Carbon::now()->monthName);
+        return view('despesas.index')->with(compact('despesas', 'soma', 'despesas_agrupadas', 'mes_atual'));
     }
 
-    public function listarDespesas()
+    public function listarDespesas($toArray = false)
     {
-        return Despesas::where('user_id', '=', auth()->user()->id)->get();
+        $query =  Despesas::where('user_id', '=', auth()->user()->id)
+            ->whereMonth('despesas.created_at', Carbon::now()->month)
+            ->join('tipo_despesa', 'despesas.categoria', '=', 'tipo_despesa.id')
+            ->select('despesas.*', 'tipo_despesa.descricao as tipo_despesa_descricao');
+
+        if($toArray)
+            return $query->get()->toArray();
+
+        return $query->get();
+
+    }
+
+    public function listarEAgruparDespesas()
+    {
+        $lista_despesas_agrupadas = array();
+        $despesas = $this->listarDespesas(true);
+
+        foreach ($despesas as $key => $value){
+
+            if(in_array($value['tipo_despesa_descricao'], array_keys($lista_despesas_agrupadas))){
+                $valor = $lista_despesas_agrupadas[$value['tipo_despesa_descricao']];
+                $soma = $valor + $value['valor'];
+                $lista_despesas_agrupadas[$value['tipo_despesa_descricao']] = $soma;
+            }else{
+                $lista_despesas_agrupadas[$value['tipo_despesa_descricao']] = $value['valor'];
+            }
+
+        }
+        return $lista_despesas_agrupadas;
     }
 
     public function totalDespesas()

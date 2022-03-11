@@ -33,7 +33,7 @@
                         <a class="nav-link active" aria-current="page" href="{{ url('/home') }}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/despesas') }}">Meus Gastos</a>
+                        <a class="nav-link" href="{{ url('/despesas') }}">Despesas</a>
                     </li>
                 </ul>
 {{--                <form class="d-flex">--}}

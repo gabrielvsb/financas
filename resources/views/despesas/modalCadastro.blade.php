@@ -24,10 +24,7 @@
                         <div class="col-6">
                             <label for="categoria" class="form-label">Categoria</label>
                             <select class="form-select" id="categoria" name="categoria" aria-label="Default select example">
-                                <option selected>Selecione uma categoria</option>
-                                <option value="1">Alimentação</option>
-                                <option value="2">Entreterimento</option>
-                                <option value="3">Lazer</option>
+
                             </select>
                         </div>
                     </div>

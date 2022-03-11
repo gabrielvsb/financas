@@ -28,6 +28,9 @@ Route::middleware(['client'])->group(function () {
     Route::get('/despesas', [DespesaController::class, 'index'])->name('despesas.index');
     Route::post('/despesas/cadastrar', [DespesaController::class, 'cadastrar'])->name('despesas.cadastrar');
     Route::post('/despesas/deletar', [DespesaController::class, 'deletar'])->name('despesas.deletar');
+    Route::get('/teste', [DespesaController::class, 'listarEAgruparDespesas'])->name('teste');
+    //TIPOS
+    Route::get('/tipos/buscartipos', [\App\Http\Controllers\TipoDespesaController::class, 'buscarTipos'])->name('tipos.buscar');
 
     //POUPANCA
     Route::get('/poupanca', [PoupancaController::class, 'index'])->name('poupanca.index');
